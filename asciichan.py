@@ -21,6 +21,16 @@ class Handler(webapp2.RequestHandler):
 
 class MainPage(Handler):
     def get(self):
-        self.write("asciichan!")
+        self.render("index.html")
+
+    def post(self):
+        title = self.request.get("title")
+        art = self.request.get("art")
+
+        if title and art:
+            self.write("thanks!")
+        else:
+            error = "we need both a title and some artwork!"
+            self.render("index.html", error=error)
 
 app = webapp2.WSGIApplication([('/', MainPage)], debug = True)

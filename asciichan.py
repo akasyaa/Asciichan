@@ -21,7 +21,7 @@ class Handler(webapp2.RequestHandler):
 
 class MainPage(Handler):
     def get(self):
-        self.render("index.html")
+        self.render_index()
 
     def post(self):
         title = self.request.get("title")
@@ -31,6 +31,9 @@ class MainPage(Handler):
             self.write("thanks!")
         else:
             error = "we need both a title and some artwork!"
-            self.render("index.html", error=error)
+            self.render_index(title, art, error)
+
+    def render_index(self, title="", art="", error=""):
+        self.render("index.html", title=title, art=art, error=error)
 
 app = webapp2.WSGIApplication([('/', MainPage)], debug = True)

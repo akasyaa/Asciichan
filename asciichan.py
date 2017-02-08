@@ -33,12 +33,16 @@ class MainPage(Handler):
         art = self.request.get("art")
 
         if title and art:
-            self.write("thanks!")
+            a = Art(title = title, art = art)
+            a.put()
+
+            self.redirect("/")
         else:
             error = "we need both a title and some artwork!"
             self.render_index(title, art, error)
 
     def render_index(self, title="", art="", error=""):
-        self.render("index.html", title=title, art=art, error=error)
+        arts = db.GqlQuery("SELECT * FROM Art ORDER BY created DESC")
+        self.render("index.html", title=title, art=art, error=error, arts=arts)
 
 app = webapp2.WSGIApplication([('/', MainPage)], debug = True)
